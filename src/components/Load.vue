@@ -50,7 +50,7 @@
   @Component({
     components: { FileDropZone }
   })
-  export default class Step0 extends Vue {
+  export default class Load extends Vue {
 
     @State('scheduleData') scheduleData: any;
 

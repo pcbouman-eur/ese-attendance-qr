@@ -9,7 +9,7 @@
             </v-stepper-step>
             <v-divider />
             <v-stepper-step step="2" :complete="step > 2" editable>
-              Define URL Patterns
+              Define Template URL
             </v-stepper-step>          
             <v-divider />
             <v-stepper-step step="3" editable>
@@ -35,9 +35,9 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import Step0 from '@/components/Step0.vue'
-  import Step1 from '@/components/Step1.vue'
-  import Step2 from '@/components/Step2.vue'
+  import Step0 from '@/components/Load.vue'
+  import Step1 from '@/components/Template.vue'
+  import Step2 from '@/components/Generate.vue'
 
   export default Vue.extend({
     name: 'HelloWorld',

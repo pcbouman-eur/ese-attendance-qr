@@ -28,7 +28,7 @@
   import {groupSessionsNested} from '@/utils';
 
   @Component
-  export default class Step2 extends Vue {
+  export default class Generate extends Vue {
 
     @State('templateURL') templateURL!: string;
     @State('scheduleData') scheduleData!: ScheduleData;

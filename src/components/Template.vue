@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>Step 1</v-card-title>
+    <v-card-title>Define Template URL</v-card-title>
     <v-card-text>
       <div>
         Here you can define the URL template that should be used to generate the URL's for the QR-codes. <br />
@@ -35,7 +35,7 @@
   import {ScheduleData} from '@/data';
 
   @Component
-  export default class Step1 extends Vue {
+  export default class Template extends Vue {
 
     @State('templateURL') templateURL: any;
 
