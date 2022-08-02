@@ -25,7 +25,7 @@
   import Handlebars from 'handlebars';
   import JSZip from 'jszip';
   import QRCode from 'qrcode';
-  import {groupSessionsNested} from '@/utils';
+  import {groupSessionsNested, truncateLocation} from '@/utils';
 
   @Component
   export default class Generate extends Vue {
@@ -45,13 +45,14 @@
           const path2 = group.replaceAll('/', '_');
           zip.folder(`${path1}/${path2}`);
           for (const [offset, session] of sessions.entries()) {
+            const truncLocation = truncateLocation(session.location, 60);
             const sessionData = {
               courseCode: encodeURIComponent(session.courseCode),
               courseName: encodeURIComponent(session.courseName),
               time: encodeURIComponent(session.timeSlot.start.toLocaleString()),
               group: encodeURIComponent(session.group.name),
               sessionId: encodeURIComponent(session.id),
-              location: encodeURIComponent(session.location),
+              location: encodeURIComponent(truncLocation),
               index: offset+1,
               offset
             };
@@ -61,7 +62,7 @@
               canvasEl.width = 260;
               canvasEl.height = 360;
               console.log(`Attempting to generate QR code for url of length ${url.length} : ${url}`);
-              QRCode.toCanvas(canvasEl, url, { version: 35 }, (err: any, canvas:any) => {
+              QRCode.toCanvas(canvasEl, url, { errorCorrectionLevel: 'Q' }, (err: any, canvas:any) => {
                 if (err) {
                   reject(err);
                 }
@@ -79,7 +80,7 @@
                       `${session.courseCode} ${session.courseName}`,
                       `${session.group.name} Session ${offset+1}`,
                       session.timeSlot.start.toLocaleString(),
-                      session.location
+                      truncLocation
                     ];
                     
                     let maxWidth = canvas.width;

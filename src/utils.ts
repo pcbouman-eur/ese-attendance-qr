@@ -162,6 +162,17 @@ function processSheet(sheet: Sheet): sheet_record[] {
     return result;
 }
 
+export function truncateLocation(loc: string, maxLength: number, etcTok=', etcetera'): string {
+    if (loc.length <= maxLength) {
+        return loc;
+    }
+    const commaIdx = loc.indexOf(',');
+    if (commaIdx + etcTok.length <= maxLength) {
+        return loc.substring(0, commaIdx) + etcTok;
+    }
+    return loc.substring(0, maxLength);
+}
+
 export function sortSessions(sessions: Session[]): void {
     sessions.sort(compareSessions);
 }
