@@ -60,7 +60,8 @@
               const canvasEl = document.createElement('canvas');
               canvasEl.width = 260;
               canvasEl.height = 360;
-              QRCode.toCanvas(canvasEl, url, { errorCorrectionLevel: 'H'}, (err: any, canvas:any) => {
+              console.log(`Attempting to generate QR code for url of length ${url.length} : ${url}`);
+              QRCode.toCanvas(canvasEl, url, { version: 35 }, (err: any, canvas:any) => {
                 if (err) {
                   reject(err);
                 }

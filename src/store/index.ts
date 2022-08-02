@@ -9,7 +9,7 @@ export default new Vuex.Store({
       courseNames: [],
       sessions: [],
     },
-    templateURL: 'https://my-survey-website/survey?course={{courseCode}}&group={{group}}&session={{session}}&time={{time}}'
+    templateURL: 'https://erasmusuniversity.eu.qualtrics.com/jfe/form/SV_6zzW1oIVYXLtlI2?course={{courseCode}}&group={{group}}&session={{session}}&time={{time}}'
   },
   mutations: {
     setScheduleData(state: any, payload: any) {
