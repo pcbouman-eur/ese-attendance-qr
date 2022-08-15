@@ -91,6 +91,15 @@
 
                     canvas.height += lineHeight * textLines.length;
                     canvas.width = maxWidth;
+
+                    const fillTemp = ctx.fillStyle;
+                    const compOpTemp = ctx.globalCompositeOperation;
+                    ctx.globalCompositeOperation = 'destination-under';
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = fillTemp;                    
+                    ctx.globalCompositeOperation = compOpTemp;
+
                     ctx.putImageData( data, 0, 0 );
                     ctx.font = "15px Arial";
                     for (const [idx, line] of textLines.entries()) {
