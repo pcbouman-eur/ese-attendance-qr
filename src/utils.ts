@@ -1,4 +1,4 @@
-import { Session, Group, ScheduleData } from './data';
+import { Session, Group, ScheduleData, SheetRecord, SheetHeader } from './data';
 import { read, Sheet, utils, WorkBook } from "xlsx";
 
 import dayjs from 'dayjs';
@@ -71,16 +71,8 @@ export function groupSessions(sessions: Session[], keyFunc: (session: Session) =
 }
 
 
-interface sheet_header {
-    [key: number]: string;
-}
 
-interface sheet_record {
-    // eslint-disable-next-line
-    [key: string]: any;
-}
-
-function recordToSession(sheet_record: sheet_record, id: number): Session {
+function recordToSession(sheet_record: SheetRecord, id: number): Session {
     const courseCode = sheet_record['Course code'];
     const start = sheet_record['Start'];
     const end = sheet_record['End'];
@@ -100,7 +92,7 @@ function recordToSession(sheet_record: sheet_record, id: number): Session {
     }
 }
 
-function parseGroup(raw_input: string, courseCode: string, stripPrefix='Group '): Group {
+export function parseGroup(raw_input: string, courseCode: string, stripPrefix='Group '): Group {
     const input = raw_input.replace(stripPrefix, '');
     if (input === 'Plenary') {
         return {
@@ -127,17 +119,17 @@ function parseGroup(raw_input: string, courseCode: string, stripPrefix='Group ')
     }
 }
 
-function processSheet(sheet: Sheet): sheet_record[] {
+function processSheet(sheet: Sheet): SheetRecord[] {
     const raw_range = sheet['!ref'];
     if (!raw_range) {
         throw 'Invalid Spreadsheet';
     }
     const range = utils.decode_range(raw_range);
     let first_row = true;
-    const result: sheet_record[] = [];
-    const header: sheet_header = {};
+    const result: SheetRecord[] = [];
+    const header: SheetHeader = {};
     for (let row = range.s.r; row <= range.e.r; row++) {
-        const record: sheet_record = {};
+        const record: SheetRecord = {};
         for (let col = range.s.c; col <= range.e.c; col++) {
             const cell_address = utils.encode_cell({r: row, c: col});
             const cell = sheet[cell_address];
@@ -187,4 +179,17 @@ export function compareSessions(ses1: Session, ses2: Session): number {
     const end1 = new Date(ses1.timeSlot.end);
     const end2 = new Date(ses2.timeSlot.end);
     return end1.getTime() - end2.getTime();
+}
+
+export function sortMap<K,V>(map: Map<K,V>): Map<K,V> {
+    const result = new Map();
+    for (const key of [...map.keys()].sort()) {
+        let value = map.get(key);
+        if (value && value instanceof Map) {
+            const sorted:unknown = sortMap(value);
+            value = sorted as V;
+        }
+        result.set(key, value);
+    }
+    return result;
 }
